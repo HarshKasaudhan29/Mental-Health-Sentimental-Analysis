@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <title>Mental Health Predictor</title>
 
-    <!-- CSS  -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="./static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="./static/css2/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{{ url_for('static', filename='materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
   </head>
 
   <body>
@@ -26,22 +24,22 @@
         </div>
 
         <div class="row">
-          <form action='/predict' method="post" class="col s12">
+          <form action="{{ url_for('predict') }}" method="post" class="col s12">
             <div class="row">
               <div class="input-field col s4">
-                <label for="first_name"><b>Age</b></label>
+                <label for="age"><b>Age</b></label>
                 <br>
-                <input placeholder="Age" name="Age" id="first_name" type="text" class="validate">
+                <input placeholder="Age" name="Age" id="age" type="number" min="15" max="100" required value="{{ values.get('Age', '') if values else '' }}">
               </div>
               <div class="input-field col s4">
-                <label for="last_name"><b>Gender </b></label>
+                <label for="gender"><b>Gender </b></label>
                 <br>
-                <input id="last_name" name="Gender" placeholder="Gender"  type="text" class="validate">
+                <input id="gender" name="Gender" placeholder="Gender" type="number" min="0" max="2" required value="{{ values.get('Gender', '') if values else '' }}">
               </div>
               <div class="input-field col s4">
-                <label for="_name"><b>Family History</b></label>
+                <label for="family_history"><b>Family History</b></label>
                 <br>
-                <input id="_name" name="Family_history" placeholder="Family History" type="text" class="validate">
+                <input id="family_history" name="Family_history" placeholder="Family History" type="number" min="0" max="1" required value="{{ values.get('Family_history', '') if values else '' }}">
               </div>
             </div>
             <div class="row center">
@@ -51,12 +49,15 @@
         </div>
         <br>
         <div class="row center">
-          <h6 class="waves-effect waves-light orange">{{pred}}<br></h6>
+          {% if error %}
+          <h6 class="red-text">{{ error }}</h6>
+          {% endif %}
+          {% if pred %}
+          <h6 class="waves-effect waves-light orange">{{ pred }}</h6>
+          {% endif %}
         </div>
       </div>
     </div>
     <br><br>
-  </div>
-</div>
 </body>
 </html>
